@@ -1,23 +1,37 @@
-var burgerName = document.getElementById('burger-name');
-var costs = document.getElementsByClassName('ingredients-container')[0].getElementsByClassName('ingredient');
-var total;
-var totalHtmlElement = document.getElementById('total');
-var couponsInput = document.getElementById('discount-coupon');
-var coupons = ['824hr', '260nq', '86ngi', '91uvp'];
+var burgerBaseCost = 50;
+var discount = 0.2;
+var minIngredients = 2;
+var coupons = ['8sntod', 'dbrkg1', 'acyxvr', 'azzfbq', 'fyt8ul'];
+
+var totalHtml = document.getElementById('total');
+var cost;
+var checkboxes = document.getElementsByClassName('list-container')[0].getElementsByTagName('input');
+var checkboxCounter = 0;
+var inputName = document.getElementById('burger-name');
+var userCoupon = document.getElementById('discount-input');
 
 document.getElementById('button').addEventListener('click', function() {
-  total = 50;
-  for (var i = 0; i < costs.length; i++) {
-    if (costs[i].checked === true) {
-      total += parseInt(costs[i].value);
+
+  checkboxCounter = 0;
+  cost = burgerBaseCost;
+
+  for (var i = 0; i < checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+      checkboxCounter++;
+      cost += parseInt(checkboxes[i].value);
     }
   }
 
-  for(var x = 0; x < coupons.length; x++) {
-    if (couponsInput.value === coupons[x]) {
-      total -= (total * 20) / 100;
+  if (inputName.value.length === 0) {
+    alert('Inserisci un nome per il tuo Burger');
+  } else if (checkboxCounter < minIngredients) {
+    alert('Inserisci almeno ' + minIngredients + ' ingredienti');
+  } else {
+    if (coupons.indexOf(userCoupon.value) !== -1) {
+      cost -= cost * discount;
     }
+
+    totalHtml.innerText = cost;
   }
 
-  totalHtmlElement.getElementsByTagName('span')[0].innerText = total;
-})
+  });
